@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/nivid.iml" filepath="$PROJECT_DIR$/.idea/nivid.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/EndPointSecurity.iml" filepath="$PROJECT_DIR$/.idea/EndPointSecurity.iml" />
     </modules>
   </component>
 </project>

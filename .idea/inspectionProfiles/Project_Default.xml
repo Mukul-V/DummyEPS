@@ -1,6 +1,7 @@
 <component name="InspectionProjectProfileManager">
   <profile version="1.0">
     <option name="myName" value="Project Default" />
+    <inspection_tool class="PyMethodParametersInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
     <inspection_tool class="PyPep8Inspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
       <option name="ignoredErrors">
         <list>
@@ -13,14 +14,19 @@
         <list>
           <option value="N802" />
           <option value="N801" />
+          <option value="N806" />
         </list>
       </option>
     </inspection_tool>
+    <inspection_tool class="PyTypeCheckerInspection" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="ignoredIdentifiers">
         <list>
           <option value="wijungleapp.src.views.BaseRequestClass.Users" />
           <option value="wijungleapp.src.serializers.AppsClassificationGroupSerializer" />
+          <option value="sentry_sdk" />
+          <option value="datetime.time.__sub__" />
+          <option value="wijungleapp.src.views.RetryAttemptLimiter.INVALID_PASSWORD_LIMIT" />
         </list>
       </option>
     </inspection_tool>
