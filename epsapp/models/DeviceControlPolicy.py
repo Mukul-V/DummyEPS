@@ -9,7 +9,7 @@ class DeviceControlPolicy(models.Model):
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
     name = models.CharField(max_length=100, unique=True)
     description = models.CharField(max_length=1000)
-    schedule_class_group = models.ForeignKey(BaseClassificationGroup, on_delete=models.CASCADE, null=True)
+    schedule_class_group = models.ForeignKey(BaseClassificationGroup, on_delete=models.CASCADE)
     usb_storage_device = models.IntegerField(choices=action_type, default=1)
     cd_dvd = models.IntegerField(choices=action_type, default=1)
     portable = models.IntegerField(choices=action_type, default=1)

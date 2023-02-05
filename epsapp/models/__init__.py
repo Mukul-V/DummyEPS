@@ -16,12 +16,18 @@ from .ContentClassification import *
 
 from .DeviceClassification import *
 
+from .Domain import *
+from .WebClassification import *
+
+from .FileClassification import *
+
 from .BaseClassificationGroup import *
 from .ClassificationGroupMapping import *
 
 from .Role import *
 
 from .DeviceControlPolicy import *
+from .DeviceException import *
 
 from .AppControlPolicy import *
 from .AppControlPolicyData import *
@@ -36,3 +42,8 @@ from .AppVersion import *
 
 from .AuthTrails import *
 from .AuditTrails import *
+
+from .FeatureTable import *
+
+from .Hardware import *
+from .KeysTable import *
