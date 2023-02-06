@@ -7,7 +7,7 @@ action_type = (
     (1, 1),  # Block
     (2, 2),  # Allow
     (3, 3),  # ReadOnly
-    (4, 4)  # AllowButReport
+    (4, 4)   # Allow and Report
 )
 
 class_group_type = (
@@ -54,4 +54,24 @@ key_state = (
     (2, 2),  # In-Active
     (3, 3),  # GracePeriod
     (4, 4),  # Unused
+)
+
+channel_type = (
+    (1, 1),  # Web
+    (2, 2),  # Email
+    (3, 3),  # App
+    (4, 4),  # Printer
+    (5, 5)  # Network
+)
+
+schedule_duration = (
+        (1, 1),  # Forever
+        (2, 2)   # On Time
+)
+
+ip_type = (
+    (1, 1),  # "IP"
+    (2, 2),  # IP_Range"
+    (3, 3),  # "Network"
+    (4, 4)   # "IP_List"
 )

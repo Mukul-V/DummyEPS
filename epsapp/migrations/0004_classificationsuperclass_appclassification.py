@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
                 ('key', models.AutoField(primary_key=True, serialize=False)),
             ],
             options={
-                'verbose_name_plural': 'Classification Super Class',
+                'verbose_name_plural': 'FileClassification Super Class',
                 'get_latest_by': 'key',
             },
         ),
@@ -32,7 +32,7 @@ class Migration(migrations.Migration):
                 ('organization', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='epsapp.organization')),
             ],
             options={
-                'verbose_name_plural': 'App Classification',
+                'verbose_name_plural': 'App FileClassification',
                 'get_latest_by': 'key',
             },
         ),

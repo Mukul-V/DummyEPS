@@ -1,4 +1,5 @@
 from django.db import models
+from epsapp.models.CommonFields import custom_type
 
 
 class ContentClassification(models.Model):
@@ -9,6 +10,7 @@ class ContentClassification(models.Model):
     old_name = models.CharField(max_length=150, null=True)
     validation_value = models.CharField(max_length=150, null=True)
     no_of_matches = models.IntegerField()
+    custom = models.IntegerField(choices=custom_type, default=1)
 
     def __int__(self):
         return self.key

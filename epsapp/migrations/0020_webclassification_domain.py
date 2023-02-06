@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('organization', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='epsapp.organization')),
             ],
             options={
-                'verbose_name_plural': 'Web Classification',
+                'verbose_name_plural': 'Web FileClassification',
                 'get_latest_by': 'key',
             },
         ),

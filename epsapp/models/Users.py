@@ -1,6 +1,6 @@
 from django.db import models
 from epsapp.models.Organization import Organization
-from epsapp.models.UserGroup import UserGroup
+from epsapp.models.UserGroup.UserGroup import UserGroup
 from epsapp.models.UserAuthentication import UserAuthentication
 
 

@@ -1,49 +1,58 @@
 from .Users import *
-from .UserGroup import *
+from .UserGroup.UserGroup import *
+from .UserGroup.Users_User_Group_Mapping import *
 from .Organization import *
 from .Admin import *
 from .UserAuthentication import *
-
-from .Antivirus import *
-from .AntivirusNegativePath import *
-
+from .UserHardwareRestrict import *
+from .Antivirus.Antivirus import *
+from .Antivirus.AntivirusNegativePath import *
 from .ClassificationSuperClass import *
-
-from .AppClassification import *
-from .AppClassificationData import *
-
+from .AppClassification.AppClassification import *
+from .AppClassification.AppClassificationData import *
 from .ContentClassification import *
-
+from .FileClassification.FileContent import *
+from .FileClassification.FileDetail import *
 from .DeviceClassification import *
-
-from .Domain import *
-from .WebClassification import *
-
-from .FileClassification import *
-
-from .BaseClassificationGroup import *
-from .ClassificationGroupMapping import *
-
-from .Role import *
-
-from .DeviceControlPolicy import *
-from .DeviceException import *
-
-from .AppControlPolicy import *
-from .AppControlPolicyData import *
-
-from .AppFileAccessDlp import *
-from .AppFileAccessDlpData import *
-
-from .ClipboardDlp import *
-from .ClipboardDlpData import *
-
+from .WebClassification.Domain import *
+from .WebClassification.WebClassification import *
+from .IpClassification import *
+from .FileClassification.FileClassification import *
+from .ScheduleClassification.ScheduleClassification import *
+from .ScheduleClassification.ScheduleDays import *
+from .ClassificationGroup.BaseClassificationGroup import *
+from .ClassificationGroup.ClassificationGroupMapping import *
+from .Role.Role import *
+from .Role.RoleAndAction import *
+from .DeviceControlPolicy.DeviceControlPolicy import *
+from .DeviceControlPolicy.DeviceException import *
+from .AppControlPolicy.AppControlPolicy import *
+from .AppControlPolicy.AppControlPolicyData import *
+from .AppFileAccessDlp.AppFileAccessDlp import *
+from .AppFileAccessDlp.AppFileAccessDlpData import *
+from .ClipboardDlp.ClipboardDlp import *
+from .ClipboardDlp.ClipboardDlpData import *
+from .LocalPrinterDlp.LocalPrinterDlp import *
+from .LocalPrinterDlp.LocalPrinterDlpData import *
+from .NetworkDlp.NetworkDlp import *
+from .NetworkDlp.NetworkDlpData import *
+from .ScreenshotDlp.ScreenshotDlp import *
+from .ScreenshotDlp.ScreenshotDlpData import *
+from .WebDlp.WebDlp import *
+from .WebDlp.WebDlpData import *
 from .AppVersion import *
-
-from .AuthTrails import *
-from .AuditTrails import *
-
+from .Trails.AuthTrails import *
+from .Trails.AuditTrails import *
 from .FeatureTable import *
-
 from .Hardware import *
 from .KeysTable import *
+from .OsTable import *
+from .Reporting import *
+from .Rules.RuleUserMapping import *
+from .Rules.Rules import *
+from .Settings.Settings import *
+from .Settings.SettingsNegativePathModel import *
+from .WebFiltering.WebFiltering import *
+from .WebFiltering.WebFilteringMapping import *
+from .TokenAuth import *
+from .History.UserHistory import *

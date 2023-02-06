@@ -8,5 +8,5 @@ class ClassificationSuperClass(models.Model):
         return self.key
 
     class Meta:
-        verbose_name_plural = "Classification Super Class"
+        verbose_name_plural = "FileClassification Super Class"
         get_latest_by = 'key'

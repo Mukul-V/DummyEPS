@@ -22,4 +22,4 @@ class DeviceClassification(models.Model):
         return self.name
 
     class Meta:
-        verbose_name_plural = "Device Classification"
+        verbose_name_plural = "Device FileClassification"
