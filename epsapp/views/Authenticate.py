@@ -39,10 +39,10 @@ class Authenticate(object):
                 origin_ip = request.META['REMOTE_ADDR']
 
                 user = UserAuthentication.objects.get(Q(username=username) & Q(user_type=kwargs['user_type']))
-                qry = list(UserAuthentication.objects.filter(username=username, user_type=kwargs['user_type']).values("key", "invalid_attempt", "holding_datetime"))
+                qry = list(UserAuthentication.objects.filter(username=username, user_type=kwargs['user_type']).values("id", "invalid_attempt", "holding_datetime"))
                 attempts = qry[0]["invalid_attempt"]
                 holding_time = qry[0]["holding_datetime"]
-                key = qry[0]["key"]
+                key = qry[0]["id"]
                 retry = RetryAttemptLimiter(username, attempts, holding_time)
                 val = retry.checkUnderTimeout()  # Checked the Checkout Time
 

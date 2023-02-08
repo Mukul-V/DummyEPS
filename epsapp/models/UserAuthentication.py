@@ -5,8 +5,8 @@ from epsapp.models.Organization import Organization
 
 
 class UserAuthentication(AbstractBaseUser):
-    organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
-    key = models.AutoField(primary_key=True)
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE, null=True)
+    id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=100, verbose_name="username")
     password = models.CharField(max_length=100, verbose_name="password")
     type = (

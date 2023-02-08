@@ -208,8 +208,9 @@ class AdminLoginAPI(APIView):
                 return Response("Max Login Limit Reached wait and Try Again Later")
 
             if user is not None:  # User is Valid and Authenticated
-                qry = list(UserAuthentication.objects.filter(username=user).values_list('organization', 'key'))
+                qry = list(UserAuthentication.objects.filter(username=user).values_list('organization', 'id'))
                 role_qry = list(Admin.objects.filter(user_auth=qry[0][1]).values('role_id'))
+                print(role_qry)
                 role = role_qry[0]["role_id"]
                 if role is None:
                     return Response("Invalid Role of User")
@@ -261,6 +262,8 @@ class AdminLoginAPI(APIView):
                     #     parent = feature_data[i]["id_parent"]
                     #     menu_data[grand_parent]["children"][parent]["children"][feature_id[i]] = dictionary[feature_id[i]]
                 session_id = request.session.session_key
+                print(request.session['org_id'])
+                print(request.session['user_id'])
                 response_data = {
                     "token": token,
                     "msg": "Login Success",
