@@ -3,25 +3,26 @@ from datetime import datetime
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from epsapp.models.Trails import AuthTrails
+from epsapp.models.AuthTrails import AuthTrails as AuthTrail
+from epsapp.serializers.AuthTrails import AuthTrails
 
 
 class AdminLogout(APIView):
     permission_classes = ([IsAuthenticated])
 
     def get(self, request):
-        print(request.session["user_id"])
-        # print(requests.header["authorization"])
-        # request.user.auth_token.delete()
-        # logout(request)
-        return Response('User Logged out successfully')
-
-    # def get(self, request):
-    #     user_id = request.session["user_id"]
-    #     data = AuthTrails.objects.get(user=user_id)
-    #     current_dateTime = datetime.now()
-    #     detail = {
-    #         "user_logout": "Ended "+str(current_dateTime),
-    #     }
-    #     print(detail)
-    #     return Response('User Logged out successfully')
+        print(request.session)
+        if 'auth_trails' in request.session:
+            current_dateTime = datetime.now()
+            auth_id = request.session["auth_trail"]
+            data = AuthTrail.objects.get(key=auth_id)
+            detail = {
+                "user_logout": "Ended " + str(current_dateTime),
+            }
+            serial = AuthTrails(data, data=detail, partial=True)
+            if serial.is_valid(raise_exception=True):
+                serial.save()
+            logout(request)
+            return Response('Logged Successfully')
+        else:
+            return Response("Invalid Token Login Again.")

@@ -1,8 +1,8 @@
 from rest_framework import status
 from datetime import datetime
 from rest_framework.permissions import IsAuthenticated
-from epsapp.models.Trails.AuthTrails import AuthTrails
-from epsapp.serializers.Trails.AuthTrails import AuthTrails as AuthTrailSerial
+from epsapp.models.AuthTrails import AuthTrails
+from epsapp.serializers.AuthTrails import AuthTrails as AuthTrailSerial
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from epsapp.serializers.UserLogin import UserLoginSerializer
@@ -10,7 +10,7 @@ from epsapp.views.Authenticate import Authenticate
 from epsapp.renderers import UserRenderer
 from rest_framework_simplejwt.tokens import RefreshToken
 from epsapp.models.UserAuthentication import UserAuthentication
-from epsapp.models.Role.RoleAndAction import RoleAndAction
+from epsapp.models.RoleAndAction import RoleAndAction
 from epsapp.models.FeatureTable import FeatureTable
 from epsapp.models.Admin import Admin
 
@@ -210,7 +210,6 @@ class AdminLoginAPI(APIView):
             if user is not None:  # User is Valid and Authenticated
                 qry = list(UserAuthentication.objects.filter(username=user).values_list('organization', 'id'))
                 role_qry = list(Admin.objects.filter(user_auth=qry[0][1]).values('role_id'))
-                print(role_qry)
                 role = role_qry[0]["role_id"]
                 if role is None:
                     return Response("Invalid Role of User")
@@ -219,6 +218,7 @@ class AdminLoginAPI(APIView):
                 token = get_tokens_for_user(user)
                 request.session["access_token"] = token["access"]
                 request.session["refresh_token"] = token["refresh"]
+                request.session["auth"] = 1
                 now = datetime.now()
                 current_time = now.astimezone()
                 auth_data = {  # Data of Auth Trail
@@ -262,8 +262,6 @@ class AdminLoginAPI(APIView):
                     #     parent = feature_data[i]["id_parent"]
                     #     menu_data[grand_parent]["children"][parent]["children"][feature_id[i]] = dictionary[feature_id[i]]
                 session_id = request.session.session_key
-                print(request.session['org_id'])
-                print(request.session['user_id'])
                 response_data = {
                     "token": token,
                     "msg": "Login Success",
@@ -272,6 +270,7 @@ class AdminLoginAPI(APIView):
                     "session_id": session_id
                 }
                 return Response(response_data, status=status.HTTP_200_OK)
+
             else:  # User Pass Something Invalid in Credentials
                 return Response({'errors': {'none_field_error': 'Username or Password is not Valid'}}, status=status.HTTP_404_NOT_FOUND)
         else:

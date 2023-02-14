@@ -1,7 +1,7 @@
 from django.db import models
 from epsapp.models.UserAuthentication import UserAuthentication
 from epsapp.models.Organization import Organization
-from epsapp.models.Role.Role import Role
+from epsapp.models.Role import Role
 
 
 class Admin(models.Model):

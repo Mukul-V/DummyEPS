@@ -1,9 +1,4 @@
-from datetime import datetime
-from django.db.models import F
 from rest_framework_simplejwt.tokens import RefreshToken
-from epsapp.models.Trails.AuditTrails import AuditTrails as AuditTrailsModel
-from epsapp.serializers.Trails.AuditTrails import AuditTrails
-from epsapp.ENUM_File import audit_type, audit_action
 
 
 # Generate Token Manually
@@ -21,12 +16,13 @@ def my_import(name):
     mod = __import__(components[0])
     for comp in components[1:]:
         mod = getattr(mod, comp)
+    print("in import")
     return mod
 
 
 # Dictionary of request params, models, serializers
 dictionary = {
-    "antivirus": ['Antivirus.Antivirus', 'Antivirus.Antivirus'],
+    "antivirus": ['Antivirus', 'Antivirus'],
     "antivirus-negative-path": ['Antivirus.AntivirusNegativePath', 'Antivirus.AntivirusNegativePath'],
 
     "app-class": ['AppClassification.AppClassification', 'AppClassification.AppClassification'],
@@ -65,8 +61,7 @@ dictionary = {
     "rules": ['Rules.Rules', 'Rules.Rules'],
     "rules-action": ['Rules.RuleUserMapping', 'Rules.RuleUserMapping'],
 
-    "schedule-class": ['ScheduleClassification.ScheduleClassification',
-                       'ScheduleClassification.ScheduleClassification'],
+    "schedule-class": ['ScheduleClassification.ScheduleClassification', 'ScheduleClassification.ScheduleClassification'],
     "schedule-days": ['ScheduleClassification.ScheduleDays', 'ScheduleClassification.ScheduleDays'],
 
     "screenshot-dlp": ['ScreenshotDlp.ScreenshotDlp', 'ScreenshotDlp.ScreenshotDlp'],
@@ -91,20 +86,35 @@ dictionary = {
     "web-filtering-mapping": ['WebFiltering.WebFilteringMapping', 'WebFiltering.WebFilteringMapping'],
 
     "admin": ['Admin', 'Admin'],
+
     "app-version": ['AppVersion', 'AppVersion'],
+
     "super-class": ['ClassificationSuperClass', 'ClassificationSuperClass'],
+
     "content-class": ['ContentClassification', 'ContentClassification'],
+
     "device-class": ['DeviceClassification', 'DeviceClassification'],
+
     "feature-table": ['FeatureTable', 'FeatureTable'],
+
     "hardware": ['Hardware', 'Hardware'],
+
     "ip-class": ['IpClassification', 'IpClassification'],
+
     "keys": ['KeysTable', 'KeysTable'],
+
     "organization": ['Organization', 'Organization'],
+
     "os-table": ['OsTable', 'OsTable'],
+
     "reporting": ['Reporting', 'Reporting'],
+
     "token-auth": ['TokenAuth', 'TokenAuth'],
+
     "user-auth": ['UserAuthentication', 'UserAuthentication'],
+
     "user-hardware-restrict": ['UserHardwareRestrict', 'UserHardwareRestrictSerializer'],
+
     "users": ["Users", "Users"]
 }
 
@@ -220,8 +230,8 @@ hardware_column = [
 
 # GET API
 
-def get_data(models, page, rows, org_id, user_id, auth_trail, field="key", order="1", column=None, val=None,
-             types=None):
+def get_data(models, page, rows, org_id, user_id, auth_trail, field="key", order="1", column=None, val=None, types=None):
+
     # PAGINATION ROWS AND COLUMNS
     keys = org_id
     val1 = rows * (page - 1)
@@ -264,10 +274,10 @@ def get_data(models, page, rows, org_id, user_id, auth_trail, field="key", order
     else:
         col = None
 
-    # Fetching Data from the Database
+    # FETCHING DATA FROM DATABASE
     if models in dictionary:  # Common Get for all Models
-        model = my_import('wijungleapp.src.models.' + dictionary[models][0])
-        serializer = my_import('wijungleapp.src.serializers.' + dictionary[models][1])
+        model = my_import('epsapp.models.' + dictionary[models][0])
+        serializer = my_import('epsapp.serializers.' + dictionary[models][1])
         qry_len = 0
         detail = 0
 
@@ -276,24 +286,32 @@ def get_data(models, page, rows, org_id, user_id, auth_trail, field="key", order
             qry_len = model.objects.all().order_by(field).filter(**{column + "__icontains": val}).count()  # NEED TO CHECK LATER ONCE
 
         elif order == "1":  # INCREASING ORDER {DEFAULT}
-            if models == "base-class-grp" and types == "app" or types == "web" or types == "file" or types == "device" or types == "ip" or types == "schedule":  # Condition for the Base_Class_Group
+            if models == "base-class-grp" and types == "app" or types == "web" or types == "file" or types == "device" or types == "ip" or types == "schedule":  # CLASSIFICATION GROUP GET
                 detail = model.objects.all().filter(type=types).order_by(field).filter(organization=keys)[val1:val2]
                 qry_len = model.objects.all().filter(type=types).order_by(field).count()  # NEED TO CHECK LATER ONCE
             else:
-                if models == "users":
-                    user_auth = my_import('wijungleapp.src.models.' + dictionary['user-auth'][0])
-                    detail = model.objects.values('name', 'phone', 'email', 'dob', 'user_auth__username', 'user_auth__is_active').order_by(field).filter(organization=keys)[val1:val2]
+                if models == "users":  # USERS GET API
+                    detail = model.objects.values('key', 'name', 'phone', 'email', 'dob', 'user_auth__username', 'user_auth__is_active').order_by(field).filter(organization=keys)[val1:val2]
                     qry_len = model.objects.all().order_by(field).count()
-                else:
+
+                elif models == "organization":  # ORGANIZATION GET API
+                    detail = model.objects.all().order_by(field)[val1:val2]
+                    qry_len = model.objects.all().order_by(field).count()
+
+                else:  # COMMON GET FOR ALL
                     detail = model.objects.all().order_by(field).filter(organization=keys)[val1:val2]
                     qry_len = model.objects.all().order_by(field).count()
 
         elif order == "0":  # DECREASING ORDER
-            if models == "base-class-grp" and types == "app" or types == "web" or types == "file" or types == "device" or types == "ip" or types == "schedule":  # Condition for the Base_Class_Group
-                detail = model.objects.all().filter(type=types).order_by("-" + field).filter(organization=keys)[
-                         val1:val2]
+            if models == "base-class-grp" and types == "app" or types == "web" or types == "file" or types == "device" or types == "ip" or types == "schedule":  # CLASSIFICATION GROUP GET
+                detail = model.objects.all().filter(type=types).order_by("-" + field).filter(organization=keys)[val1:val2]
                 qry_len = model.objects.all().filter(type=types).order_by("-" + field).count()
-            else:
+
+            elif models == "organization":  # ORGANIZATION GET
+                detail = model.objects.all().order_by("-" + field)[val1:val2]
+                qry_len = model.objects.all().order_by("-" + field).count()
+
+            else:  # COMMON GET FOR ALL
                 detail = model.objects.all().order_by("-" + field).filter(organization=keys)[val1:val2]
                 qry_len = model.objects.all().order_by("-" + field).count()
         serial = serializer(detail, many=True).data
@@ -306,3 +324,21 @@ def get_data(models, page, rows, org_id, user_id, auth_trail, field="key", order
 
     else:
         return "Data Not Found"
+
+
+# POST DATA
+def post_data(org_id, user_id, auth_trail, models, data, action=None):
+    print("Function called")
+    # ANTIVIRUS POST
+    print(models)
+    if models in dictionary and models == "antivirus":
+        # from epsapp.serializers.Antivirus.Antivirus
+        serializer = my_import('epsapp.serializers.' + dictionary[models][1])
+        print(serializer)
+        data["organization"] = org_id
+        serial = serializer(data=data)
+        if serial.is_valid(raise_exception=True):
+            print("Serializer is valid Good")
+        # else:
+        #     print("There is some mistake Check Again")
+        return "Working on the Device Control Condition"

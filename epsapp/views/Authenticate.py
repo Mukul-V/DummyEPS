@@ -1,6 +1,6 @@
 from django.db.models import Q
 from epsapp.models.UserAuthentication import UserAuthentication
-from epsapp.serializers.Trails.AuthTrails import AuthTrails
+from epsapp.serializers.AuthTrails import AuthTrails
 from epsapp.models.Users import Users
 from datetime import datetime
 from epsapp.views.RetryAttemptLimiter import RetryAttemptLimiter
