@@ -1,4 +1,8 @@
+from datetime import datetime
+
 from rest_framework_simplejwt.tokens import RefreshToken
+from epsapp.ENUM_File import audit_type, audit_action
+from epsapp.serializers.AuditTrailsSerializer import AuditTrails
 
 
 # Generate Token Manually
@@ -16,106 +20,105 @@ def my_import(name):
     mod = __import__(components[0])
     for comp in components[1:]:
         mod = getattr(mod, comp)
-    print("in import")
     return mod
 
 
 # Dictionary of request params, models, serializers
 dictionary = {
-    "antivirus": ['Antivirus', 'Antivirus'],
-    "antivirus-negative-path": ['Antivirus.AntivirusNegativePath', 'Antivirus.AntivirusNegativePath'],
+    "antivirus": ['Antivirus', 'AntivirusSerializer'],
+    "antivirus-negative-path": ['AntivirusNegativePath', 'AntivirusNegativePathSerializer'],
 
-    "app-class": ['AppClassification.AppClassification', 'AppClassification.AppClassification'],
-    "app-class-data": ['AppClassification.AppClassificationData', 'AppClassification.AppClassificationData'],
+    "app-class": ['AppClassification', 'AppClassificationSerializer'],
+    "app-class-data": ['AppClassificationData', 'AppClassificationDataSerializer'],
 
-    "app-policy": ['AppControlPolicy.AppControlPolicy', 'AppControlPolicy.AppControlPolicy'],
+    "app-policy": ['AppControlPolicy', 'AppControlPolicySerializer'],
     "app-policy-data": ['AppControlPolicy.AppControlPolicyData', 'AppControlPolicy.AppControlPolicyData'],
 
-    "app-file-dlp": ['AppFileAccessDlp.AppFileAccessDlp', 'AppFileAccessDlp.AppFileAccessDlp'],
-    "app-file-dlp-data": ['AppFileAccessDlp.AppFileAccessDlpData', 'AppFileAccessDlp.AppFileAccessDlpData'],
+    "app-file-dlp": ['AppFileAccessDlp', 'AppFileAccessDlpSerializer'],
+    "app-file-dlp-data": ['AppFileAccessDlpData', 'AppFileAccessDlpDataSerializer'],
 
-    "base-class-grp": ['ClassificationGroup.BaseClassificationGroup', 'ClassificationGroup.BaseClassificationGroup'],
-    "class-grp": ['ClassificationGroup.ClassificationGroupMapping', 'ClassificationGroup.ClassificationGroupMapping'],
+    "base-class-grp": ['BaseClassificationGroup', 'BaseClassificationGroupSerializer'],
+    "class-grp": ['ClassificationGroupMapping', 'ClassificationGroupMappingSerializer'],
 
-    "clipboard-dlp": ['ClipboardDlp.ClipboardDlp', 'ClipboardDlp.ClipboardDlp'],
-    "clipboard-dlp-data": ['ClipboardDlp.ClipboardDlpData', 'ClipboardDlp.ClipboardDlpData'],
+    "clipboard-dlp": ['ClipboardDlp', 'ClipboardDlpSerializer'],
+    "clipboard-dlp-data": ['ClipboardDlpData', 'ClipboardDlpDataSerializer'],
 
-    "device-policy": ['DeviceControlPolicy.DeviceControlPolicy', 'DeviceControlPolicy.DeviceControlPolicy'],
-    "exception": ['DeviceControlPolicy.DeviceException', 'DeviceControlPolicy.DeviceException'],
+    "device-policy": ['DeviceControlPolicy', 'DeviceControlPolicySerializer'],
+    "exception": ['DeviceException', 'DeviceExceptionSerializer'],
 
-    "file-class": ['FileClassification.FileClassification', 'FileClassification.FileClassification'],
-    "file-upload": ['', 'FileClassification.FileUploadSerializer'],
+    "file-class": ['FileClassification', 'FileClassificationSerializer'],
+    "file-upload": ['', 'FileUploadSerializer'],
     "file-data": ['FileData', 'FileDataSerializer'],
 
-    "user-history": ['History.UserHistory', 'History.UserHistory'],
+    "user-history": ['UserHistory', 'UserHistorySerializer'],
 
-    "printer-dlp": ['LocalPrinterDlp.LocalPrinterDlp', 'LocalPrinterDlp.LocalPrinterDlp'],
-    "printer-dlp-data": ['LocalPrinterDlp.LocalPrinterDlpData', 'LocalPrinterDlp.LocalPrinterDlpData'],
+    "printer-dlp": ['LocalPrinterDlp', 'LocalPrinterDlpSerializer'],
+    "printer-dlp-data": ['LocalPrinterDlpData', 'LocalPrinterDlpDataSerializer'],
 
-    "network-dlp": ['NetworkDlp.NetworkDlp', 'NetworkDlp.NetworkDlp'],
-    "network-dlp-data": ['NetworkDlp.NetworkDlpData', 'NetworkDlp.NetworkDlpData'],
+    "network-dlp": ['NetworkDlp', 'NetworkDlpSerializer'],
+    "network-dlp-data": ['NetworkDlpData', 'NetworkDlpDataSerializer'],
 
-    "role": ['Role.Role', 'Role.Role'],
-    "role-action": ['Role.RoleAndAction', 'Role.RoleAndAction'],
+    "role": ['Role', 'RoleSerializer'],
+    "role-action": ['RoleAndAction', 'RoleAndActionSerializer'],
 
-    "rules": ['Rules.Rules', 'Rules.Rules'],
-    "rules-action": ['Rules.RuleUserMapping', 'Rules.RuleUserMapping'],
+    "rules": ['Rules', 'RulesSerializer'],
+    "rules-action": ['RuleUserMapping', 'RuleUserMappingSerializer'],
 
-    "schedule-class": ['ScheduleClassification.ScheduleClassification', 'ScheduleClassification.ScheduleClassification'],
-    "schedule-days": ['ScheduleClassification.ScheduleDays', 'ScheduleClassification.ScheduleDays'],
+    "schedule-class": ['ScheduleClassification', 'ScheduleClassificationSerializer'],
+    "schedule-days": ['ScheduleDays', 'ScheduleDaysSerializer'],
 
-    "screenshot-dlp": ['ScreenshotDlp.ScreenshotDlp', 'ScreenshotDlp.ScreenshotDlp'],
-    "screenshot-dlp-data": ['ScreenshotDlp.ScreenshotDlpData', 'ScreenshotDlp.ScreenshotDlpData'],
+    "screenshot-dlp": ['ScreenshotDlp', 'ScreenshotDlpSerializer'],
+    "screenshot-dlp-data": ['ScreenshotDlpData', 'ScreenshotDlpDataSerializer'],
 
-    "settings": ['Settings.Settings', 'Settings.Settings'],
-    "settings-negative-path": ['Settings.SettingsNegativePathModel', 'Settings.SettingsNegativePathModel'],
+    "settings": ['Settings', 'SettingsSerializer'],
+    "settings-negative-path": ['SettingsNegativePathModel', 'SettingsNegativePathModelSerializer'],
 
-    "audit-trails": ['Trails.AuditTrails', 'Trails.AuditTrails'],
-    "auth-trails": ['Trails.AuthTrails', 'Trails.AuthTrails'],
+    "audit-trails": ['AuditTrails', 'AuditTrailsSerializer'],
+    "auth-trails": ['AuthTrails', 'AuthTrailsSerializer'],
 
-    "user-group": ['UserGroup.UserGroup', 'UserGroup.UserGroup'],
-    "user-group-mapping": ['UserGroup.Users_User_Group_Mapping', 'UserGroup.Users_User_Group_Mapping'],
+    "user-group": ['UserGroup', 'UserGroupSerializer'],
+    "user-group-mapping": ['Users_User_Group_Mapping', 'Users_User_Group_Mapping_Serializer'],
 
-    "domain": ['WebClassification.Domain', "WebClassification.Domain"],
-    "web-class": ['WebClassification.WebClassification', 'WebClassification.WebClassification'],
+    "domain": ['Domain', "DomainSerializer"],
+    "web-class": ['WebClassification', 'WebClassificationSerializer'],
 
-    "web-dlp": ['WebDlp.WebDlp', 'WebDlp.WebDlp'],
-    "web-dlp-data": ['WebDlp.WebDlpData', 'WebDlp.WebDlpData'],
+    "web-dlp": ['WebDlp', 'WebDlpSerializer'],
+    "web-dlp-data": ['WebDlpData', 'WebDlpDataSerializer'],
 
-    "web-filtering": ['WebFiltering.WebFiltering', 'WebFiltering.WebFiltering'],
-    "web-filtering-mapping": ['WebFiltering.WebFilteringMapping', 'WebFiltering.WebFilteringMapping'],
+    "web-filtering": ['WebFiltering', 'WebFilteringSerializer'],
+    "web-filtering-mapping": ['WebFilteringMapping', 'WebFilteringMappingSerializer'],
 
-    "admin": ['Admin', 'Admin'],
+    "admin": ['Admin', 'AdminSerializer'],
 
-    "app-version": ['AppVersion', 'AppVersion'],
+    "app-version": ['AppVersion', 'AppVersionSerializer'],
 
-    "super-class": ['ClassificationSuperClass', 'ClassificationSuperClass'],
+    "super-class": ['ClassificationSuperClass', 'ClassificationSuperClassSerializer'],
 
-    "content-class": ['ContentClassification', 'ContentClassification'],
+    "content-class": ['ContentClassification', 'ContentClassificationSerializer'],
 
-    "device-class": ['DeviceClassification', 'DeviceClassification'],
+    "device-class": ['DeviceClassification', 'DeviceClassificationSerializer'],
 
-    "feature-table": ['FeatureTable', 'FeatureTable'],
+    "feature-table": ['FeatureTable', 'FeatureTableSerializer'],
 
-    "hardware": ['Hardware', 'Hardware'],
+    "hardware": ['Hardware', 'HardwareSerializer'],
 
-    "ip-class": ['IpClassification', 'IpClassification'],
+    "ip-class": ['IpClassification', 'IpClassificationSerializer'],
 
-    "keys": ['KeysTable', 'KeysTable'],
+    "keys": ['KeysTable', 'KeysTableSerializer'],
 
-    "organization": ['Organization', 'Organization'],
+    "organization": ['Organization', 'OrganizationSerializer'],
 
-    "os-table": ['OsTable', 'OsTable'],
+    "os-table": ['OsTable', 'OsTableSerializer'],
 
-    "reporting": ['Reporting', 'Reporting'],
+    "reporting": ['Reporting', 'ReportingSerializer'],
 
-    "token-auth": ['TokenAuth', 'TokenAuth'],
+    "token-auth": ['TokenAuth', 'TokenAuthSerializer'],
 
-    "user-auth": ['UserAuthentication', 'UserAuthentication'],
+    "user-auth": ['UserAuthentication', 'UserAuthenticationSerializer'],
 
     "user-hardware-restrict": ['UserHardwareRestrict', 'UserHardwareRestrictSerializer'],
 
-    "users": ["Users", "Users"]
+    "users": ["Users", "UsersSerializer"]
 }
 
 # Columns of the Table in UI
@@ -127,6 +130,7 @@ user_column = [
     {"dataIndex": "email", "title": "Email Address", "align": "center"},
     {"dataIndex": "dob", "title": "Date of Birth", "align": "center"},
     {"dataIndex": "user_auth_username", "title": "Username", "align": "center"},
+    {"dataIndex": "user_auth_is_active", "title": "Status", "align": "center"},
 ]
 
 # USER HISTORY COLUMN
@@ -277,7 +281,9 @@ def get_data(models, page, rows, org_id, user_id, auth_trail, field="key", order
     # FETCHING DATA FROM DATABASE
     if models in dictionary:  # Common Get for all Models
         model = my_import('epsapp.models.' + dictionary[models][0])
+        print(model)
         serializer = my_import('epsapp.serializers.' + dictionary[models][1])
+        print(serializer)
         qry_len = 0
         detail = 0
 
@@ -342,3 +348,72 @@ def post_data(org_id, user_id, auth_trail, models, data, action=None):
         # else:
         #     print("There is some mistake Check Again")
         return "Working on the Device Control Condition"
+
+
+def post_user(org_id, user_id, auth_trail, models, data):  # Add New User  org_id, user_id, auth_trail, model, data
+    user_auth_model = my_import('epsapp.models.' + dictionary["user-auth"][0])
+    print(user_auth_model)
+    model = my_import('epsapp.models.' + dictionary[models][0])
+    print(model)
+    serializer = my_import('epsapp.serializers.' + dictionary[models][1])
+    print(serializer)
+    user_auth_serial = my_import('epsapp.serializers.' + dictionary["user-auth"][1])
+    print(user_auth_serial)
+    if data.get("username") is None or data.get("password") is None or data.get("password2") is None or org_id is None:
+        return "Required Fields are Empty"
+    data["organization"] = org_id
+    auth_data = {
+        "organization": org_id,
+        "username": data["username"],
+        "password": data["password"],
+        "password2": data["password2"],
+        "user_type": 2,
+    }
+    print(auth_data)
+    print(user_auth_serial)
+    auth_serial = user_auth_serial(data=auth_data)
+    if auth_serial.is_valid(raise_exception=True):  # Serializing the User Authentication Data
+        auth_serial.save()  # Inserting details in Auth Table
+        key = user_auth_model.objects.latest()  # (LATEST KEY OF USER AUTHENTICATION TABLE)
+
+        data["user_auth"] = key  # Adding user_authentication key in the User Personal Detail Data
+        serial = serializer(data=data)
+        if serial.is_valid(raise_exception=True):  # Serializing the Data for User table with user_auth ID
+            serial.save()  # Saved Data in The User Table
+
+            key = model.objects.latest()  # (THE LATEST KEY OF USER TABLE)
+            if data.get("hardware_value"):  # Inserting Data in USER_HARDWARE_RESTRICT
+                hardware_value = data.get("hardware_value")
+                hardware_user_model = my_import('epsapp.models.' + dictionary["user-hardware-restrict"][0])
+                details = []
+                for i in range(len(hardware_value)):
+                    details.append(hardware_user_model(user=key, hardware_value=hardware_value[i]))
+                hardware_user_model.objects.bulk_create(details)  # Domain Bulk Insertion
+
+            # Code for the insertion in Audit Trail:
+            current_dateTime = datetime.now()
+            audit_data = {
+                "auth_trail": auth_trail,
+                "type": audit_type.TASK_SUCCESS.value,
+                "date_time": current_dateTime,
+                "action": audit_action.CREATE_RECORD.value + " Add New User"
+            }
+            serial = AuditTrails(data=audit_data)
+            if serial.is_valid(raise_exception=True):
+                serial.save()
+            return 'User Registration Success'
+        else:
+            # Code for the insertion in Audit Trail:
+            current_dateTime = datetime.now()
+            audit_data = {
+                "auth_trail": auth_trail,
+                "type": audit_type.TASK_FAILED.value,
+                "date_time": current_dateTime,
+                "action": audit_action.CREATE_RECORD.value + " Classification Group"
+            }
+            serial = AuditTrails(data=audit_data)
+            if serial.is_valid(raise_exception=True):
+                serial.save()
+            return "Record Not Saved Successfully"
+    else:
+        return serializer.errors

@@ -2,7 +2,9 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from epsapp.views.BaseRequestClass import get_data, post_data
+from epsapp.views.BaseRequestClass import get_data, post_data, post_user
+
+
 # post_data, delete_data, patch_data, put_position, \
 # post_group, patch_group, post_user, get_app_data, get_web_domain
 
@@ -29,6 +31,7 @@ class BaseView(APIView):
                 user_id = request.session["user_id"]
                 auth_trail = request.session["auth_trail"]
                 data = get_data(model, page, rows, org_id, user_id, auth_trail, field, order, column, val, types)
+                print("Hello")
                 return Response(data, status=status.HTTP_200_OK)
 
         # if request.data.get('model') == "app-data" and request.data.get("app-class"):  # API for getting app_class_data [on EDIT]
@@ -58,24 +61,20 @@ class BaseView(APIView):
         model = request.query_params.get('model')
         data = request.data
         action = request.query_params.get('action', default="null")
-        print(model)
-        print(data)
-        print(action)
         org_id = request.session["org_id"]
         user_id = request.session["user_id"]
         auth_trail = request.session["auth_trail"]
 
         if action == "null":  # this is also for Registration
-            print("In the condition")
             # if model == "base-class-grp":
             #     detail = post_group(org_id, user_id, model, data)
             #     return Response(detail)
-            # if model == "users":
-            #     detail = post_user(org_id, user_id, auth_trail, model, data)
-            #     return Response(detail)
-            # else:
-            detail = post_data(org_id, user_id, auth_trail, model, data)  # CALL FROM BASE-REQUEST-CLASS
-            return Response(detail)
+            if model == "users":
+                detail = post_user(org_id, user_id, auth_trail, model, data)
+                return Response("Hello")
+            else:
+                detail = post_data(org_id, user_id, auth_trail, model, data)  # CALL FROM BASE-REQUEST-CLASS
+                return Response(detail)
 
     # def delete(self, request):
     #     model = request.query_params.get('model')

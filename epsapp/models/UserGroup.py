@@ -8,7 +8,7 @@ class UserGroup(models.Model):
     name = models.CharField(max_length=50, unique=True)
     description = models.CharField(max_length=200)
     factor_auth = models.CharField(max_length=10)
-    session_in_activity = models.CharField(max_length=200)
+    session_in_activity = models.IntegerField(default=0)
     simultaneous_login = models.IntegerField()
 
     def __int__(self):

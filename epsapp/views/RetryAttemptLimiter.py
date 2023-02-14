@@ -1,7 +1,7 @@
 from datetime import datetime
 from django.db.models import Q
 from epsapp.models.UserAuthentication import UserAuthentication
-from epsapp.serializers.UserAuthentication import UserAuthentication as UserAuthSerial
+from epsapp.serializers.UserAuthenticationSerializer import UserAuthentication as UserAuthSerial
 
 
 class RetryAttemptLimiter:

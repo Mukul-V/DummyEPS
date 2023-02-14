@@ -2,10 +2,10 @@ from rest_framework import status
 from datetime import datetime
 from rest_framework.permissions import IsAuthenticated
 from epsapp.models.AuthTrails import AuthTrails
-from epsapp.serializers.AuthTrails import AuthTrails as AuthTrailSerial
+from epsapp.serializers.AuthTrailsSerializer import AuthTrails as AuthTrailSerial
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from epsapp.serializers.UserLogin import UserLoginSerializer
+from epsapp.serializers.UserLoginSerializer import UserLoginSerializer
 from epsapp.views.Authenticate import Authenticate
 from epsapp.renderers import UserRenderer
 from rest_framework_simplejwt.tokens import RefreshToken
