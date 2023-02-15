@@ -2,7 +2,7 @@ from rest_framework import serializers
 from epsapp.models.Rules import Rules
 
 
-class Rules(serializers.ModelSerializer):
+class RulesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rules
         fields = ['organization', 'key', 'name', 'description', 'device_control_policy', 'app_control_policy',

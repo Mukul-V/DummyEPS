@@ -231,10 +231,17 @@ hardware_column = [
     {"dataIndex": "current_ip", "title": "Current IP", "align": "center"}
 ]
 
+# ANTIVIRUS COLUMN
+antivirus_column = [
+    {"dataIndex": "max_file_size_scan", "title": "Max File Size", "align": "center"},
+    {"dataIndex": "extension", "title": "Extension", "align": "center"},
+    {"dataIndex": "custom", "title": "Custom", "align": "center"},
+]
+
 
 # GET API
 
-def get_data(models, page, rows, org_id, user_id, auth_trail, field="key", order="1", column=None, val=None, types=None):
+def get_data(models, page, rows, org_id, user_id, auth_trail, field="key", order="1", column=None, val=None, types=None, class_type=None):
 
     # PAGINATION ROWS AND COLUMNS
     keys = org_id
@@ -244,6 +251,9 @@ def get_data(models, page, rows, org_id, user_id, auth_trail, field="key", order
     # COLUMN ASSIGNING AS PER MODEL
     if models == "admin" and types == "admin_column":
         col = admin_column
+
+    elif models == "antivirus" and types == "antivirus_column":
+        col = antivirus_column
 
     elif models == "reporting" and types == "reporting":
         col = reporting_column

@@ -1,8 +1,10 @@
 from django.db import models
 from epsapp.models.CommonFields import custom_type
+from epsapp.models.Organization import Organization
 
 
 class ContentClassification(models.Model):
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE, null=True)
     key = models.AutoField(primary_key=True)
     relation_of_data = models.CharField(max_length=5, null=True)
     keyword_regex = models.CharField(max_length=150)

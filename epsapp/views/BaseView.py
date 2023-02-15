@@ -27,10 +27,11 @@ class BaseView(APIView):
                 field = request.query_params.get('field', default="key")  # Field to order the data accordingly
                 order = request.query_params.get('order', default="1")  # Type of order the data accordingly
                 types = request.query_params.get('types', default=None)
+                class_type = request.query_params.get('class_type', default=None)
                 org_id = request.session["org_id"]
                 user_id = request.session["user_id"]
                 auth_trail = request.session["auth_trail"]
-                data = get_data(model, page, rows, org_id, user_id, auth_trail, field, order, column, val, types)
+                data = get_data(model, page, rows, org_id, user_id, auth_trail, field, order, column, val, types, class_type)
                 print("Hello")
                 return Response(data, status=status.HTTP_200_OK)
 

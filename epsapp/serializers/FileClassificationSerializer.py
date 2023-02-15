@@ -2,7 +2,7 @@ from rest_framework import serializers
 from epsapp.models.FileClassification import FileClassification
 
 
-class FileClassification(serializers.ModelSerializer):
+class FileClassificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = FileClassification
         fields = ['organization', 'class_super', 'key', 'name', 'description', 'file_type', 'file_title', 'file_desc',
